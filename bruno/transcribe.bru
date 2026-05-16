@@ -1,0 +1,38 @@
+meta {
+  name: Transcribe Audio
+  type: http
+}
+
+post {
+  url: {{baseUrl}}/transcribe
+  body: multipartForm
+}
+
+headers {
+  Accept: application/json
+}
+
+body:multipart-form {
+  file: @audio.mp3
+}
+
+docs {
+  # Transcribe Audio
+
+  Sube un archivo de audio (MP3, WAV, M4A, OGG) y devuelve segmentos de subtítulos.
+
+  **Límites:**
+  - Tamaño máximo: 25MB
+  - Formatos: MP3, WAV, M4A, OGG
+  - Idioma: Español (hardcodeado)
+
+  **Response:**
+  ```json
+  {
+    "segments": [
+      {"start": 0.0, "end": 3.2, "text": "Hola mundo"},
+      {"start": 3.2, "end": 6.5, "text": "Esto es una prueba"}
+    ]
+  }
+  ```
+}
