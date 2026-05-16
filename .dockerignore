@@ -1,0 +1,14 @@
+.git
+.gitignore
+.github
+__pycache__
+*.pyc
+.venv
+.ATL
+.atl
+.env
+.env.local
+README.md
+Dockerfile
+.dockerignore
+openspec

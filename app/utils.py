@@ -4,7 +4,9 @@ import whisper
 import os
 
 # Cargar modelo Whisper al iniciar la API
-model_name = os.getenv("MODEL_NAME", "small")
+# Default: "tiny" (74MB) para caber en Render Free Tier (512MB RAM).
+# Para mejor calidad en tier de pago: cambiar a "small" (467MB) o "base" (144MB).
+model_name = os.getenv("MODEL_NAME", "tiny")
 model = whisper.load_model(model_name)
 
 def split_into_short_segments(whisper_segments, max_words=15):
