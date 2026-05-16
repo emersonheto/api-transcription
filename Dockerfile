@@ -1,11 +1,15 @@
-# Usar imagen oficial de uv con Python 3.11
-FROM ghcr.io/astral-sh/uv:python3.11-slim
+# Imagen base: Python 3.11 (slim para ser pequeña)
+FROM python:3.11-slim
 
 # Directorio de trabajo
 WORKDIR /app
 
+# Instalar uv (más rápido que pip)
+RUN pip install --no-cache-dir uv
+
 # Copiar archivos de configuración
 COPY pyproject.toml ./
+COPY uv.lock ./
 
 # Crear entorno virtual e instalar dependencias con uv
 # --no-dev para instalar solo lo necesario para producción
