@@ -1,0 +1,26 @@
+# .github/workflows/deploy_uv.yml
+name: Deploy Whisper API UV
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v0
+        with:
+          version: "0.11.14"
+
+      - name: Install dependencies
+        run: uv pip install -r pyproject.toml  # UV lee pyproject.toml
+
+      - name: Run FastAPI app
+        run: uv run app.main:app --host 0.0.0.0 --port 8000
