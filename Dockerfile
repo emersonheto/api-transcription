@@ -4,6 +4,12 @@ FROM python:3.11-slim
 # Directorio de trabajo
 WORKDIR /app
 
+# Instalar ffmpeg (requerido por Whisper para procesar audio)
+# y git (requerido por algunos paquetes pip para compilación)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg git build-essential && \
+    rm -rf /var/lib/apt/lists/*
+
 # Instalar uv (más rápido que pip)
 RUN pip install --no-cache-dir uv
 

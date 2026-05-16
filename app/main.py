@@ -82,9 +82,13 @@ async def transcribe_mp3(file: UploadFile = File(...)):
 
         return JSONResponse(content={"segments": segments})
 
+    except HTTPException:
+        raise
     except Exception as e:
-        # Error without leaking filesystem paths or stack traces
-        raise HTTPException(status_code=500, detail={"error": "transcription_failed"})
+        # Log real error for debugging, return safe message to client
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail={"error": "transcription_failed", "reason": str(e)})
 
     finally:
         if os.path.exists(tmp_path):
