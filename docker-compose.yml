@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: transcription-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Cambiar a 'medium' o 'large-v3-turbo' para máxima precisión
+      - MODEL_NAME=small
+    volumes:
+      # Opcional: para persistir archivos temporales si querés debug
+      - ./tmp:/tmp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

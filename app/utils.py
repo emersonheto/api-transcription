@@ -2,13 +2,22 @@
 
 import whisper
 import os
+from functools import lru_cache
 
-# Cargar modelo Whisper al iniciar la API
-# Default: "small" (467MB) - Balance perfecto de precisión y velocidad para 8GB RAM.
-# Para máxima calidad: cambiar a "medium" (1.4GB).
-# Para máxima velocidad: cambiar a "tiny" (74MB).
-model_name = os.getenv("MODEL_NAME", "small")
-model = whisper.load_model(model_name)
+# Model cache - loaded lazily on first use to avoid import-time side effects
+_model_cache = {}
+
+def get_model():
+    """
+    Lazily load and cache the Whisper model based on MODEL_NAME environment variable.
+    Defaults to "small" if not specified.
+    """
+    model_name = os.getenv("MODEL_NAME", "small")
+
+    if model_name not in _model_cache:
+        _model_cache[model_name] = whisper.load_model(model_name)
+
+    return _model_cache[model_name]
 
 def split_into_short_segments(whisper_segments, max_words=15):
     """
